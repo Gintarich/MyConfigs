@@ -38,7 +38,7 @@ return {
 
             require("mason").setup()
             require("mason-lspconfig").setup({
-                ensure_installed = {"lua_ls",},
+                ensure_installed = {"lua_ls","omnisharp"},
                 handlers = {
                     function(server_name) -- default handler (optional)
                         if server_name == "lua_ls" then
@@ -79,14 +79,20 @@ return {
                         ["<Tab>"] = cmp.mapping(function()
                             if  luasnip.expandable() and cmp.visible() then
                                 luasnip.expand()
+                            elseif cmp.visible() then
+                                local entry = cmp.get_selected_entry()
+                                if not entry then
+                                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                                else
+                                    cmp.confirm()
+                                end
                             elseif  luasnip.jumpable(1) then
                                 luasnip.jump(1)
-                            elseif cmp.visible() then
-                                cmp.select_next_item()
                             else
                                 require("neotab").tabout()
                             end
                         end, { "i", "s" }),
+
                         ["<S-Tab>"] = cmp.mapping(function(fallback)
                             if cmp.visible() then
                                 cmp.select_prev_item()
