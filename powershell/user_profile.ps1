@@ -12,7 +12,7 @@
 #oh-my-posh
 #oh-my-posh init pwsh | Invoke-Expression
 #oh-my-posh init pwsh --config 'C:\Users\Admin\Documents\PowerShell\clean-detailed.omp.json' | Invoke-Expression
-oh-my-posh init pwsh --config  "C:\Users\User\AppData\Local\Programs\oh-my-posh\themes\blue-owl.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config  $env:USERPROFILE"\AppData\Local\Programs\oh-my-posh\themes\blue-owl.omp.json" | Invoke-Expression
 #oh-my-posh init pwsh --config "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/bubbles.omp.json" | Invoke-Expression
 
 # Z module for fast Cd
