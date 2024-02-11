@@ -48,7 +48,7 @@ function M.config()
     local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
     -- cmp_setup object
-    local cmp_setup ={}
+    local cmp_setup = {}
 
     cmp_setup.sources = cmp.config.sources({
         { name = 'luasnip' }, -- For luasnip users.
@@ -74,7 +74,7 @@ function M.config()
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<Tab>"] = cmp.mapping(function()
-            if  luasnip.expandable() and cmp.visible() then
+            if luasnip.expandable() and cmp.visible() then
                 luasnip.expand()
             elseif cmp.visible() then
                 local entry = cmp.get_selected_entry()
@@ -83,7 +83,7 @@ function M.config()
                 else
                     cmp.confirm()
                 end
-            elseif  luasnip.jumpable(1) then
+            elseif luasnip.jumpable(1) then
                 luasnip.jump(1)
             else
                 require("neotab").tabout()
@@ -103,8 +103,8 @@ function M.config()
     -- Configure autopairs
     local cmp_autopairs = require('nvim-autopairs.completion.cmp')
     cmp.event:on(
-    'confirm_done',
-    cmp_autopairs.on_confirm_done()
+        'confirm_done',
+        cmp_autopairs.on_confirm_done()
     )
     require("luasnip.loaders.from_vscode").lazy_load()
     cmp.setup({
