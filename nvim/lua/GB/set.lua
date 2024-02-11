@@ -29,3 +29,9 @@ vim.opt.updatetime = 50
 
 vim.g.mapleader = " "
 
+vim.opt.virtualedit = "block"
+vim.opt.inccommand = "split"
+
+vim.opt.ignorecase = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
