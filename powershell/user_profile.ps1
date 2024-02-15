@@ -2,6 +2,8 @@
 # C:\Users\User> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # C:\Users\User> Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 
+# scoop install ripgrep
+
 # Install neovim
 # scoop install neovim
 
