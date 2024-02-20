@@ -56,3 +56,10 @@ Import-Module CompletionPredictor
 Import-Module PSFzf
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
 
+# Write to file all locations that contain tekla
+# (Get-ChildItem -Path *Tekla* -Recurse -Depth 1).FullName | Out-File -FilePath C:\Users\User\.config\OutTeklaPath.txt
+#
+# Read from file and then pipe it into fzf
+# Get-Content C:\Users\User\.config\OutTeklaPath.txt | Get-Childitem -Recurse | fzf
+# Get-Content C:\Users\User\.config\OutTeklaPath.txt | Split-Path | Get-Childitem -Depth 4 | fzf
+# (Get-Content C:\Users\User\.config\OutTeklaPath.txt | Get-Childitem -Depth 2).FullName | fzf -i
