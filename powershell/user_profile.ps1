@@ -32,6 +32,42 @@ function whereis($command){
 	Get-Command -Name $command -ErrorAction SilentlyContinue |
 	Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 	}
+function msbuild2022($path) {
+    Invoke-Expression "C:\'Program Files (x86)'\'Microsoft Visual Studio'\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe "+$path
+}
+
+function Build-Project {
+    param (
+        [string]$customProjectFile = $null
+    )
+
+    if ($customProjectFile -eq $null -or $customProjectFile -eq "") {
+        # Find the first .csproj file in the current directory
+        $projectFile = Get-ChildItem -Filter *.csproj | Select-Object -First 1
+
+        # Check if a .csproj file is found
+        if ($projectFile -eq $null) {
+            Write-Host "No .csproj file found in the current directory."
+            return
+        }
+    } else {
+        # Use the custom project file provided as an argument
+        $projectFile = Get-Item $customProjectFile
+
+        # Check if the specified file exists
+        if (-not $projectFile.Exists) {
+            Write-Host "Specified project file does not exist: $customProjectFile"
+            return
+        }
+    }
+
+    # Build the MSBuild command
+    $msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe"
+    $msbuildCommand = "& ""$msbuildPath"" ""$($projectFile.FullName)"""
+
+    # Execute MSBuild
+    Invoke-Expression -Command $msbuildCommand
+}
 
 #function prompt {
 #  $loc = $executionContext.SessionState.Path.CurrentLocation;
@@ -65,4 +101,82 @@ Import-Module CompletionPredictor
 # scoop install fzf
 Import-Module PSFzf
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
+
+function Build-Project2 {
+    param (
+        [string]$customProjectFile = $null
+    )
+
+    if ($customProjectFile -eq $null -or $customProjectFile -eq "") {
+        # Find the first .sln file in the current directory
+        $solutionFile = Get-ChildItem -Filter *.sln | Select-Object -First 1
+
+        # Check if a .sln file is found
+        if ($solutionFile -ne $null) {
+            # Build the MSBuild command for the solution
+            $msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe"
+            $msbuildCommand = "& ""$msbuildPath"" ""$($solutionFile.FullName)"""
+        } else {
+            # Find the first .csproj file in the current directory
+            $projectFile = Get-ChildItem -Filter *.csproj | Select-Object -First 1
+
+            # Check if a .csproj file is found
+            if ($projectFile -eq $null) {
+                Write-Host "No .sln or .csproj file found in the current directory."
+                return
+            }
+
+            # Build the MSBuild command for the .csproj file
+            $msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe"
+            $msbuildCommand = "& ""$msbuildPath"" ""$($projectFile.FullName)"""
+        }
+    } else {
+        # Use the custom project file provided as an argument
+        $customFile = Get-Item $customProjectFile
+
+        # Check if the specified file exists
+        if (-not $customFile.Exists) {
+            Write-Host "Specified project file does not exist: $customProjectFile"
+            return
+        }
+
+        # Build the MSBuild command for the custom project file
+        $msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe"
+        $msbuildCommand = "& ""$msbuildPath"" ""$($customFile.FullName)"""
+    }
+
+    # Execute MSBuild
+    Invoke-Expression -Command $msbuildCommand
+}
+
+# Call the function with a custom project file as an argument
+# Build-Project -customProjectFile "Path\To\YourProject.csproj"
+
+function Build-And-Run-Project {
+    param (
+        [string]$customProjectFile = $null,
+        [switch]$searchInSubfolders
+    )
+
+    # Build the project
+    Build-Project -customProjectFile $customProjectFile
+
+    # Check if the build was successful before attempting to run the output
+    if ($LASTEXITCODE -eq 0) {
+        # Get the output executable path(s) (adjust as needed based on your project structure)
+        $executablePaths = Get-ChildItem -Filter *.exe -Recurse:$searchInSubfolders
+
+        # Check if any executable files are found
+        if ($executablePaths -ne $null) {
+            foreach ($executablePath in $executablePaths) {
+                # Execute each found executable file
+                Start-Process -FilePath $executablePath.FullName -Wait
+            }
+        } else {
+            Write-Host "No executable files (.exe) found after build."
+        }
+    } else {
+        Write-Host "Build failed. Unable to run the project."
+    }
+}
 
