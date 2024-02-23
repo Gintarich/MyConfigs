@@ -34,6 +34,42 @@ function whereis($command){
 	Get-Command -Name $command -ErrorAction SilentlyContinue |
 	Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 	}
+function msbuild2022($path) {
+    Invoke-Expression "C:\'Program Files (x86)'\'Microsoft Visual Studio'\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe "+$path
+}
+
+function Build-Project {
+    param (
+        [string]$customProjectFile = $null
+    )
+
+    if ($customProjectFile -eq $null -or $customProjectFile -eq "") {
+        # Find the first .csproj file in the current directory
+        $projectFile = Get-ChildItem -Filter *.csproj | Select-Object -First 1
+
+        # Check if a .csproj file is found
+        if ($projectFile -eq $null) {
+            Write-Host "No .csproj file found in the current directory."
+            return
+        }
+    } else {
+        # Use the custom project file provided as an argument
+        $projectFile = Get-Item $customProjectFile
+
+        # Check if the specified file exists
+        if (-not $projectFile.Exists) {
+            Write-Host "Specified project file does not exist: $customProjectFile"
+            return
+        }
+    }
+
+    # Build the MSBuild command
+    $msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe"
+    $msbuildCommand = "& ""$msbuildPath"" ""$($projectFile.FullName)"""
+
+    # Execute MSBuild
+    Invoke-Expression -Command $msbuildCommand
+}
 
 #function prompt {
 #  $loc = $executionContext.SessionState.Path.CurrentLocation;
