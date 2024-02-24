@@ -89,7 +89,7 @@ function Build-Project {
 #Install-Module PSReadLine
 Import-Module PSReadLine
 Set-PSReadLineKeyHandler -Key Tab -Function Complete
-# Set-PSReadLineOption -EditMode Emacs
+#Set-PSReadLineOption -EditMode Emacs
 Set-PSReadLineOption -BellStyle None
 Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin 
