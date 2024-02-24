@@ -62,3 +62,8 @@ list_code_action_kinds = function()
         print('---')
     end
 end
+
+gbBuild = function ()
+    mypath = vim.fn.escape("C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe", " ")
+    print(vim.fn.system(mypath))
+end
