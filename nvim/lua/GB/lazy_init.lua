@@ -63,7 +63,64 @@ list_code_action_kinds = function()
     end
 end
 
-gbBuild = function ()
-    mypath = vim.fn.escape("C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe", " ")
-    print(vim.fn.system(mypath))
+function buildRunGB()
+    local root_dir = vim.fn.getcwd()
+    print(root_dir)
+
+    local function findAndRunExecutable(folder)
+        local exe_files = vim.fn.findfile('*.exe', folder, -1)
+        if #exe_files > 0 then
+            print("Running executable:", exe_files[1])
+            vim.fn.jobstart(exe_files[1], { detach = 1 })
+        else
+            print("No executable found.")
+        end
+    end
+
+    -- Check for .sln file
+    -- local sln_files = vim.fn.findfile('*.sln', root_dir, 1)
+    local sln_files = vim.fn.glob('*.sln')
+    local somepath = root_dir .. '\\' .. sln_files
+    print(somepath)
+    print(vim.inspect(sln_files))
+    local cwDir = vim.fn.getcwd()
+    print("The shit")
+    print(vim.inspect(vim.fn.glob(cwDir .. "**.dll")))
+  --  if #sln_files > 0 then
+  --      print("Found .sln file:", sln_files[1])
+  --      vim.fn.system('msbuild ' .. sln_files[1])
+
+  --      -- Run the executable if it exists in ./bin/debug/
+  --      local exe_path = root_dir .. '/bin/debug/'
+  --      findAndRunExecutable(exe_path)
+
+  --      -- If not found, check one level deeper
+  --      if #vim.fn.findfile('*.exe', root_dir .. '/bin/', 1) == 0 then
+  --          findAndRunExecutable(root_dir .. '/bin/')
+  --      end
+
+  --      return
+  --  end
+
+    -- Check for .csproj file
+    local csproj_files= vim.fn.glob('**/*.csproj',false,true)
+    print(vim.inspect(csproj_files))
+    local somepath2 = root_dir .. '\\' .. csproj_files[1]
+    if #csproj_files > 0 then
+        print("Found .csproj file:", csproj_files[1])
+        vim.fn.system('msbuild ' .. csproj_files[1])
+
+        -- Run the executable if it exists in ./bin/debug/
+        local exe_path = root_dir .. '/bin/debug/'
+        findAndRunExecutable(exe_path)
+
+        -- If not found, check one level deeper
+        if #vim.fn.findfile('*.exe', root_dir .. '/bin/', 1) == 0 then
+            findAndRunExecutable(root_dir .. '/bin/')
+        end
+
+        return
+    end
+
+    print("No .sln or .csproj file found.")
 end
