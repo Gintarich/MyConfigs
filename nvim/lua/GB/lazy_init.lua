@@ -65,7 +65,7 @@ end
 
 function buildRunGB()
     local root_dir = vim.fn.getcwd()
-    print(root_dir)
+    print("Root dir:" .. root_dir)
 
     local function findAndRunExecutable(folder)
         local exe_files = vim.fn.findfile('*.exe', folder, -1)
@@ -81,14 +81,12 @@ function buildRunGB()
     -- local sln_files = vim.fn.findfile('*.sln', root_dir, 1)
     local sln_files = vim.fn.glob('*.sln')
     local somepath = root_dir .. '\\' .. sln_files
-    print(somepath)
-    print(vim.inspect(sln_files))
+    print("Solution dir:" .. somepath)
     local cwDir = vim.fn.getcwd()
-    print("The shit")
-    print(vim.inspect(vim.fn.glob(cwDir .. "**.dll")))
+    print("Dll paths : >>>> " .. vim.inspect(vim.fn.glob(cwDir .. "**.dll")))
   --  if #sln_files > 0 then
   --      print("Found .sln file:", sln_files[1])
-  --      vim.fn.system('msbuild ' .. sln_files[1])
+  --      vim.fn.system('msbuild ' .. sln_files[2])
 
   --      -- Run the executable if it exists in ./bin/debug/
   --      local exe_path = root_dir .. '/bin/debug/'
@@ -104,7 +102,7 @@ function buildRunGB()
 
     -- Check for .csproj file
     local csproj_files= vim.fn.glob('**/*.csproj',false,true)
-    print(vim.inspect(csproj_files))
+    print("Csproj files >>>" .. vim.inspect(csproj_files))
     local somepath2 = root_dir .. '\\' .. csproj_files[1]
     if #csproj_files > 0 then
         print("Found .csproj file:", csproj_files[1])
