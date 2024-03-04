@@ -2,7 +2,7 @@ return {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
-        severity = vim.diagnostic.severity.ERROR -- | vim.diagnostic.severity.WARN | vim.diagnostic.severity.HINT, -- nil (ALL) or vim.diagnostic.severity.ERROR | WARN | INFO | HINT WARN | INFO | HINT, -- nil (ALL) or vim.diagnostic.severity.ERROR | WARN | INFO | HINT
+        -- severity = vim.diagnostic.severity.HINT -- | vim.diagnostic.severity.WARN | vim.diagnostic.severity.HINT, -- nil (ALL) or vim.diagnostic.severity.ERROR | WARN | INFO | HINT WARN | INFO | HINT, -- nil (ALL) or vim.diagnostic.severity.ERROR | WARN | INFO | HINT
         -- your configuration comes here
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
