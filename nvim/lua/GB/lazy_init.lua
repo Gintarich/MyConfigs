@@ -34,6 +34,17 @@ local make_code_action_params = function()
     return params
 end
 
+TEST = function ()
+    local params = make_code_action_params()
+    -- params.context.only = { "quickfix" }
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
+    for _, res in pairs(result or {}) do
+        for _, r in pairs(res.result or {}) do
+            print(vim.inspect(r))
+        end
+    end
+end
+
 execute_code_action = function(kind)
     if not kind then return end
     local params = make_code_action_params()
@@ -41,6 +52,7 @@ execute_code_action = function(kind)
     local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
     for _, res in pairs(result or {}) do
         for _, r in pairs(res.result or {}) do
+            print(vim.inspect(r.command))
             if r.edit then
                 vim.lsp.util.apply_workspace_edit(r.edit, 'utf-8')
             else
@@ -54,6 +66,7 @@ list_code_action_kinds = function()
     local params = make_code_action_params()
     local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
     for _, res in pairs(result or {}) do
+        print(vim.inspect(res))
         print('---', 'CODE ACTIONS')
         for _, r in pairs(res.result or {}) do
             -- vim.pretty_print(r) 
