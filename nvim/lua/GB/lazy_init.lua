@@ -38,11 +38,21 @@ TEST = function ()
     local params = make_code_action_params()
     -- params.context.only = { "quickfix" }
     local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
-    for _, res in pairs(result or {}) do
-        for _, r in pairs(res.result or {}) do
-            print(vim.inspect(r))
-        end
-    end
+    local p = result[1].result[1]
+    print(vim.inspect(p))
+
+    vim.lsp.util.apply_workspace_edit(p, 'utf-8')
+    --local mycodeaction = result[1]
+
+    vim.lsp.buf.execute_command(p)
+    --print(vim.inspect(result))
+   -- for _, res in pairs(result or {}) do
+   --     print(vim.inspect(mycodeaction))
+   --     vim.lsp.util.apply_workspace_edit(mycodeaction.data, 'utf-8')
+   --     for _, r in pairs(res.result or {}) do
+   --         print(vim.inspect(r))
+   --     end
+   -- end
 end
 
 execute_code_action = function(kind)

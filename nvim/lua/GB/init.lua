@@ -7,6 +7,16 @@ local GBGroup = augroup('GB', {})
 
 local autocmd = vim.api.nvim_create_autocmd
 
+local codeActionParams = {
+    context = {only = {"quickfix"}},
+    apply = true,
+    filter = function (a)
+        print("This is action i get")
+        print(vim.inspect(a))
+        return true
+    end
+}
+
 autocmd('LspAttach', {
     group = GBGroup,
     callback = function(e)
@@ -19,19 +29,19 @@ autocmd('LspAttach', {
         vim.keymap.set("n","<leader>vd",function() vim.lsp.buf.open_float() end, opts)
         vim.keymap.set("n","[d",function() vim.lsp.buf.goto_next() end, opts)
         vim.keymap.set("n","]d",function() vim.lsp.buf.goto_prev() end, opts)
-        vim.keymap.set({ 'n', 'v' }, '<space>ca',
-        function()
-            vim.lsp.buf.code_action{ {context = {'quickfix','refactor', 'source'}}}
-        end,
-        opts)
         vim.keymap.set("n","<leader>vrr",function() vim.lsp.buf.references() end, opts)
         vim.keymap.set("n","<leader>vrn",function() vim.lsp.buf.rename() end, opts)
         vim.keymap.set("n","<C-h>",function() vim.lsp.buf.signature_help() end, opts)
+        vim.keymap.set({ 'n', 'v' }, '<space>ca',
+        function()
+            vim.lsp.buf.code_action(codeActionParams)--,'refactor', 'source'}}}
+        end,
+        opts)
     end
-    })
+})
 
--- vim.api.nvim_create_autocmd("VimEnter", {
---	callback = function()
---		vim.cmd("set noshellslash")
---	end,
--- })
+    -- vim.api.nvim_create_autocmd("VimEnter", {
+        --	callback = function()
+            --		vim.cmd("set noshellslash")
+            --	end,
+            -- })
