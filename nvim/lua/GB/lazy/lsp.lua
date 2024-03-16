@@ -6,6 +6,8 @@ return {
         "j-hui/fidget.nvim",
         "folke/neodev.nvim",
         "hrsh7th/cmp-nvim-lsp",
+        { 'j-hui/fidget.nvim', opts = {} },
+        "Hoffs/omnisharp-extended-lsp.nvim",
     },
 
     config = function()

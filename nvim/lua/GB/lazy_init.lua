@@ -14,8 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("GB.lazy")
 
 local opts = { noremap=true, silent=true }
-
-----------------------------------------------------------
+--
+-- ----------------------------------------------------------
 local function quickfix()
     vim.lsp.buf.code_action({
         filter = function(a) return a.isPreferred end,
@@ -23,7 +23,7 @@ local function quickfix()
     })
 end
 
-vim.keymap.set('n', '<leader>qf', quickfix, opts)
+vim.keymap.set('n', '<leader>qf', quickfix, {desc = "[q]uick fix"})
 
 
 local make_code_action_params = function()
