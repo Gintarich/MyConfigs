@@ -1,4 +1,5 @@
 lua require('gb')
+lua require('utils')
 
 "set shell=powershell.exe
 "set shellxquote=

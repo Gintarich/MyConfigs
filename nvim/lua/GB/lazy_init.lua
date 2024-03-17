@@ -1,19 +1,19 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("GB.lazy")
 
-local opts = { noremap=true, silent=true }
+local opts = { noremap = true, silent = true }
 --
 -- ----------------------------------------------------------
 local function quickfix()
@@ -23,7 +23,7 @@ local function quickfix()
     })
 end
 
-vim.keymap.set('n', '<leader>qf', quickfix, {desc = "[q]uick fix"})
+vim.keymap.set('n', '<leader>qf', quickfix, { desc = "[q]uick fix" })
 
 
 local make_code_action_params = function()
@@ -34,7 +34,7 @@ local make_code_action_params = function()
     return params
 end
 
-TEST = function ()
+TEST = function()
     local params = make_code_action_params()
     -- params.context.only = { "quickfix" }
     local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
@@ -46,13 +46,13 @@ TEST = function ()
 
     vim.lsp.buf.execute_command(p)
     --print(vim.inspect(result))
-   -- for _, res in pairs(result or {}) do
-   --     print(vim.inspect(mycodeaction))
-   --     vim.lsp.util.apply_workspace_edit(mycodeaction.data, 'utf-8')
-   --     for _, r in pairs(res.result or {}) do
-   --         print(vim.inspect(r))
-   --     end
-   -- end
+    -- for _, res in pairs(result or {}) do
+    --     print(vim.inspect(mycodeaction))
+    --     vim.lsp.util.apply_workspace_edit(mycodeaction.data, 'utf-8')
+    --     for _, r in pairs(res.result or {}) do
+    --         print(vim.inspect(r))
+    --     end
+    -- end
 end
 
 execute_code_action = function(kind)
@@ -79,61 +79,10 @@ list_code_action_kinds = function()
         print(vim.inspect(res))
         print('---', 'CODE ACTIONS')
         for _, r in pairs(res.result or {}) do
-            -- vim.pretty_print(r) 
+            -- vim.pretty_print(r)
             print(r.kind)
         end
         print('---')
     end
 end
 
-function buildRunGB()
-    local root_dir = vim.fn.getcwd()
-    print("Root dir:" .. root_dir)
-
-    local function findAndRunExecutable(folder)
-        local exe_files = vim.fn.findfile('*.exe', folder, -1)
-        if #exe_files > 0 then
-            print("Running executable:", exe_files[1])
-            vim.fn.jobstart(exe_files[1], { detach = 1 })
-        else
-            print("No executable found.")
-        end
-    end
-    print("hello test here")
-    -- Check for .sln file
-    -- local sln_files = vim.fn.findfile('*.sln', root_dir, 1)
-    local sln_files = vim.fn.glob('*.sln')
-    local somepath = root_dir .. '\\' .. sln_files
-    print("Solution dir:" .. somepath)
-    local cwDir = vim.fn.getcwd()
-    print("Dll paths : >>>> " .. vim.inspect(vim.fn.glob(cwDir .. "**.dll")))
-    --  if #sln_files > 0 then
-    --      print("Found .sln file:", sln_files[1])
-    --      vim.fn.system('msbuild ' .. sln_files[2])
-
-    --      -- Run the executable if it exists in ./bin/debug/
-    --      local exe_path = root_dir .. '/bin/debug/'
-    --      findAndRunExecutable(exe_path)
-
-    --      -- If not found, check one level deeper
-    --      if #vim.fn.findfile('*.exe', root_dir .. '/bin/', 1) == 0 then
-    --          findAndRunExecutable(root_dir .. '/bin/')
-    --      end
-
-    --      return
-    --  end
-
-    -- Check for .csproj file
-    local csproj_files= vim.fn.glob('**/*.csproj',false,true)
-
-    if #csproj_files > 0 then
-        print("Found .csproj file:", csproj_files[1])
-        vim.fn.system('msbuild ' .. csproj_files[1])
-
-        -- Run the executable if it exists in ./bin/debug/
-        local exe_path = vim.fn.glob("**/bin/**/*.exe",false,true)[1]
-        vim.fn.jobstart(exe_path, { detach = 1 })
-        return
-    end
-    print("No .sln or .csproj file found.")
-end
