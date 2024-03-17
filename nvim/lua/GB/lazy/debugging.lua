@@ -80,7 +80,7 @@ return{
                         pickers
                         .new(opts, {
                             prompt_title = "Path to DLL",
-                            finder = finders.new_oneshot_job({ "fd", "-e", "dll", "--hidden", "--no-ignore", "--type", "f" }, {}),
+                            finder = finders.new_oneshot_job({ "fd", "--hidden", "--no-ignore", "--type", "f" }, {}),
                             sorter = conf.generic_sorter(opts),
                             attach_mappings = function(buffer_number)
                                 actions.select_default:replace(function()
