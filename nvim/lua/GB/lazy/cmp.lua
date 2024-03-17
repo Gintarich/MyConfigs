@@ -52,7 +52,7 @@ function M.config()
 
     cmp_setup.sources = cmp.config.sources({
         { name = 'luasnip' }, -- For luasnip users.
-        { name = 'nvim_lsp_signature_help' },
+        -- { name = 'nvim_lsp_signature_help' },
         { name = 'nvim_lsp' },
         --{ name = 'buffer' },
     })
