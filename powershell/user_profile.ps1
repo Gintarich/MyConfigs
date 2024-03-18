@@ -99,6 +99,9 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 # Install-Module -Name CompletionPredictor
 Import-Module CompletionPredictor
 
+# scoop install fd
+# scoop install hyperfine
+
 # Fzf
 # scoop install fzf
 Import-Module PSFzf
