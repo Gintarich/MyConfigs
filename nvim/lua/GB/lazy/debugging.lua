@@ -1,9 +1,9 @@
-return{
+return {
     "mfussenegger/nvim-dap",
     dependencies = {
         "rcarriga/nvim-dap-ui",
     },
-    config = function ()
+    config = function()
         local dap = require("dap")
         local dapui = require("dapui")
         dapui.setup()
@@ -21,14 +21,15 @@ return{
             dapui.close()
         end
         -- Setting up keymaps
-        vim.keymap.set('n','<Leader>dd',dap.toggle_breakpoint, {})
-        vim.keymap.set('n','<F5>',dap.continue, {})
+        vim.keymap.set('n', '<Leader>dd', dap.toggle_breakpoint, {})
+        vim.keymap.set('n', '<F5>', dap.continue, {})
         -- Setup debugger for c#
         dap.adapters.coreclr = {
             type = 'executable',
             -- "C:\\Users\\Admin\\AppData\\Local\\nvim-data\\mason\\bin\\"
-            command = 'C:\\Users\\Admin\\AppData\\Local\\nvim-data\\mason\\packages\\netcoredbg\\netcoredbg\\netcoredbg.exe',
-            args = {'--interpreter=vscode'}
+            command =
+            'C:\\Users\\User\\AppData\\Local\\nvim-data\\mason\\packages\\netcoredbg\\netcoredbg\\netcoredbg.exe',
+            args = { '--interpreter=vscode' }
         }
 
         -- Hover logic
@@ -45,17 +46,17 @@ return{
                 end
             end
             api.nvim_set_keymap(
-            'n', 'K', '<Cmd>lua require("dap.ui.widgets").hover()<CR>', { silent = true })
+                'n', 'K', '<Cmd>lua require("dap.ui.widgets").hover()<CR>', { silent = true })
         end
 
         dap.listeners.after['event_terminated']['me'] = function()
             for _, keymap in pairs(keymap_restore) do
                 api.nvim_buf_set_keymap(
-                keymap.buffer,
-                keymap.mode,
-                keymap.lhs,
-                keymap.rhs,
-                { silent = keymap.silent == 1 }
+                    keymap.buffer,
+                    keymap.mode,
+                    keymap.lhs,
+                    keymap.rhs,
+                    { silent = keymap.silent == 1 }
                 )
             end
             keymap_restore = {}
@@ -74,23 +75,25 @@ return{
                 name = "launch - netcoredbg",
                 request = "launch",
                 program = function()
-                    -- return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/net7.0', 'file')
+                    -- return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/net6.0', 'file')
+                    -- return "C:\\Users\\User\\source\\repos\\TestCosnoleApp\\TestCosnoleApp\\bin\\Debug\\TestConsoleAppOld.dll"
                     return coroutine.create(function(coro)
                         local opts = {}
                         pickers
-                        .new(opts, {
-                            prompt_title = "Path to DLL",
-                            finder = finders.new_oneshot_job({ "fd", "--hidden", "--no-ignore", "--type", "f" }, {}),
-                            sorter = conf.generic_sorter(opts),
-                            attach_mappings = function(buffer_number)
-                                actions.select_default:replace(function()
-                                    actions.close(buffer_number)
-                                    coroutine.resume(coro, action_state.get_selected_entry()[1])
-                                end)
-                                return true
-                            end,
-                        })
-                        :find()
+                            .new(opts, {
+                                prompt_title = "Path to DLL",
+                                finder = finders.new_oneshot_job(
+                                { "fd", "-e", "dll", "--hidden", "--no-ignore", "--type", "f" }, {}),
+                                sorter = conf.generic_sorter(opts),
+                                attach_mappings = function(buffer_number)
+                                    actions.select_default:replace(function()
+                                        actions.close(buffer_number)
+                                        coroutine.resume(coro, action_state.get_selected_entry()[1])
+                                    end)
+                                    return true
+                                end,
+                            })
+                            :find()
                     end)
                 end,
             },
