@@ -45,3 +45,8 @@ vim.keymap.set("n", "<leader>rs", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left>
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
+
+vim.keymap.set("n", "<leader>pp", function ()
+vim.lsp.buf.signature_help()
+end)
+

@@ -33,7 +33,7 @@ return {
                         capabilities = capabilities
                     }
                 end,
-                ["omnisharp"] = require("GB/lazy/lsps/omnisharp").omnisharp_setup
+                ["omnisharp"] = require("GB/lazy/lsps/omnisharp").omnisharp_setup(capabilities)
             }
         })
         vim.diagnostic.config({

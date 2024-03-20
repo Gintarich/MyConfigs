@@ -1,7 +1,8 @@
 return{ 
-    omnisharp_setup = function (server)
+    omnisharp_setup = function (capabilities)
         require'lspconfig'.omnisharp.setup {
             -- cmd = { "dotnet", "C:\\Users\\Admin\\AppData\\Local\\nvim-datamason\\packages\\omnisharp\\libexec\\OmniSharp.dll" },
+            capabilities = capabilities,
 
             -- Enables support for reading code style, naming convention and analyzer
             -- settings from .editorconfig.
