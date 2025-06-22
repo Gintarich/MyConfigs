@@ -2,6 +2,12 @@
 # C:\Users\User> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # C:\Users\User> Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 
+# Setup powershell user profile
+# Open profile file
+# nvim $PROFILE
+# source the custom powershell file
+# . "$HOME\.config\MyConfigs\powershell\user_profile.ps1"
+
 # scoop install ripgrep
 
 # Install neovim
@@ -12,10 +18,11 @@
 # Set-PoshPrompt Paradox
 
 #oh-my-posh
+#scoop install oh-my-posh
 #oh-my-posh init pwsh | Invoke-Expression
 #oh-my-posh init pwsh --config 'C:\Users\Admin\Documents\PowerShell\clean-detailed.omp.json' | Invoke-Expression
-oh-my-posh init pwsh --config  $env:USERPROFILE"\AppData\Local\Programs\oh-my-posh\themes\blue-owl.omp.json" | Invoke-Expression
-#oh-my-posh init pwsh --config "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/bubbles.omp.json" | Invoke-Expression
+# oh-my-posh init pwsh --config  $env:USERPROFILE"\AppData\Local\Programs\oh-my-posh\themes\blue-owl.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/blue-owl.omp.json" | Invoke-Expression
 
 # Z module for fast Cd
 # Install-Module -Name z
@@ -28,7 +35,7 @@ Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
 Set-Alias less 'C:\Program Files\Git\usr\bin\less.exe'
 
 
-$env:XDG_CONFIG_HOME = $env:USERPROFILE+"\.config\"
+$env:XDG_CONFIG_HOME = $env:USERPROFILE+"\.config\MyConfigs"
 # Functions
 function whereis($command){
 	Get-Command -Name $command -ErrorAction SilentlyContinue |
